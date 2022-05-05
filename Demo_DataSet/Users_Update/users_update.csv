@@ -1,0 +1,6 @@
+id,address,city,creation_date,email,firstname,last_activity_date,last_ip,lastname,postcode,gender,age,annual_income,spending_core
+11807,Address Change,North Jacobfort,2004-12-22T00:31:18.000+0000,f4a49c9cf69f575f26dbe097a4e385f70935408f,Alexander,2004-12-22T00:31:18.000+0000,179.156.166.238,Smith,19850,Female,35,18,6
+8892,Address Change,New Keithton,2007-08-07T12:27:52.000+0000,a4a762a92c83009c372028d33e14573d2c0f83a6,Richard,2007-08-07T12:27:52.000+0000,177.154.234.168,Powell,07150,Male,18,59,41
+12325,Address Change,Carlaview,2008-06-07T18:13:41.000+0000,5960e3765be9b29fd8df39543a6ad96ebdad35ed,Cody,2008-06-07T18:13:41.000+0000,112.85.82.160,Davis,44546,Female,23,70,29
+5862,Address Change,East Joseph,2000-06-14T01:40:26.000+0000,a63d45eba94ca055dcbc765076a3f83cc1df61d9,Brittany,2000-06-14T01:40:26.000+0000,104.161.8.66,Garza,71378,Male,19,46,55
+2138, New Data is Inserted,East Joseph,2003-11-06T11:01:50.000+0000,cd923b3d93cd781b828eee5510864a0e18d05a85,Timothy,2003-11-06T11:01:50.000+0000,216.186.41.169,Olson,29905,Female,44,73,7
