@@ -16,5 +16,5 @@ dbName = current_user_no_at
 cloud_storage_path = f"/Users/{current_user}/databricks_workshop/{db_prefix}"
 dlt_target_path = cloud_storage_path + "/" + "dlt"
 
-print("Database Name :- {}".format(dbName))
-print("DLT Target Path :- {}".format(dlt_target_path))
+print("Database Name :-  {}".format(dbName))
+print("DLT Target Path :-  {}".format(dlt_target_path))
