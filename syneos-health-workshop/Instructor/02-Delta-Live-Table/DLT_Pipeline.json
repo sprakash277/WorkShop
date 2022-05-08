@@ -1,0 +1,33 @@
+{
+    "clusters": [
+        {
+            "label": "default",
+            "policy_id": "606203597A000705",
+            "autoscale": {
+                "min_workers": 1,
+                "max_workers": 5
+            }
+        },
+        {
+            "label": "maintenance",
+            "policy_id": "606203597A000705"
+        }
+    ],
+    "development": true,
+    "continuous": false,
+    "edition": "advanced",
+    "photon": false,
+    "libraries": [
+        {
+            "notebook": {
+                "path": "/Repos/odl_user_604171@databrickslabs.com/WorkShop/syneos-health-workshop/Instructor/02-Delta-Live-Table/02.1-SQL-Delta-Live-Table-Ingestion"
+            }
+        }
+    ],
+    "name": "FILL_IN_THIS",
+    "storage": "/workshop/dlt_pipeline",
+    "configuration": {
+        "databaseName": "FILL_IN_THIS"
+    },
+    "target": "${databaseName}"
+}
