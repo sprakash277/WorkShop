@@ -14,6 +14,7 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,1:  Set the Env variable for the Exercise
 # MAGIC %run ../_resources/00-setup $reset_all_data=false
 
 # COMMAND ----------
@@ -63,31 +64,54 @@
 
 # COMMAND ----------
 
+# DBTITLE 1,2:  Exercise -  Lets View the user_bronze table that we created in the Previous exercise
+# MAGIC %sql
+# MAGIC select * from FILL_IN_THIS limit 5
+
+# COMMAND ----------
+
 # MAGIC %md-sandbox
 # MAGIC 
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 3/ Silver data: anonymized table, date cleaned
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 3: Silver data: anonymized table, date cleaned
 # MAGIC 
 # MAGIC <img style="float:right" width="400px" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-ingestion-step2.png"/>
 # MAGIC 
 # MAGIC We can chain these incremental transformation between tables, consuming only new data.
 # MAGIC 
-# MAGIC This can be triggered in near realtime, or in batch fashion, for example as a job running every night to consume daily data.
+# MAGIC This can be triggered in near realtime, or in batch fashion, for example as a job running every night to consume daily data.<br><br>
+# MAGIC 
+# MAGIC <div style="color:green;">
+# MAGIC (1) In this excercise we will create user_silver table which will have filtered data from the bronze table using Structured Streaming. <br>
+# MAGIC (2) We can use Delta Table as source for Structured Streaming. <br> 
+# MAGIC (3) We will be reading below columns from the user_bronze table. <br>
+# MAGIC     &nbsp; &nbsp; &nbsp;(a) firstname <br>
+# MAGIC     &nbsp; &nbsp; &nbsp;(b) email -> use sha1 function  to annonymize email column<br>
+# MAGIC     &nbsp; &nbsp; &nbsp;(c) lastname -> initcap , Converts the first letter of each word in a string to uppercase, and converts any remaining characters in each word to lowercase <br>
+# MAGIC     &nbsp; &nbsp; &nbsp;(d) creation_date <br>
+# MAGIC     &nbsp; &nbsp; &nbsp;(e) last_activity_date : Transform last_activity_date to this format -> MM-dd-yyyy HH:mm:ss <br>
+# MAGIC (4) We will use writestream to write data to the Delta format tables. To write table as delta format, pass on the delta as argument to the format. <br>
+# MAGIC (5) User trigger (once=True) to run stream one time. <br>
+# MAGIC (6) To provide exactly one semantics and recover from all failed state , autoloader manintins the state of the stream in the checkpoint. <br>
+# MAGIC (7) Writestream will write to the user_silver table  <br>
+# MAGIC </div> 
 
 # COMMAND ----------
 
 (spark.readStream 
-        .table("user_bronze")
-          .withColumn("email", sha1(col("email")))
+        .FILL_IN_THIS("user_bronze")         
           .withColumn("firstname", initcap(col("firstname")))
-          .withColumn("lastname", initcap(col("lastname")))
+          .withColumn("email", FILL_IN_THIS(col("email")))
+          .withColumn("lastname", FILL_IN_THIS )
           .withColumn("creation_date", to_timestamp(col("creation_date"), "MM-dd-yyyy HH:mm:ss"))
-          .withColumn("last_activity_date", to_timestamp(col("last_activity_date"), "MM-dd-yyyy HH:mm:ss"))
+          .withColumn("last_activity_date", FILL_IN_THIS )
      .writeStream
-     .trigger(once=True)
+     .trigger(FILL_IN_THIS)
         .option("checkpointLocation", cloud_storage_path+"/checkpoint_user_silver")
-        .table("user_silver"))
+        .table("user_silver")
+)
 
 # COMMAND ----------
 
+# DBTITLE 1,4:  Exercise -  Lets Visualize the user_silver table that we created Above
 # MAGIC %sql
-# MAGIC select * from user_bronze where id is not null
+# MAGIC select * FILL_IN_THIS limit 10;

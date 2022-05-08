@@ -18,6 +18,7 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 
 # COMMAND ----------
 
+# DBTITLE 1,1:  Set the Env variable for the Exercise
 # MAGIC %run ../_resources/00-setup $reset_all_data=false
 
 # COMMAND ----------
@@ -69,24 +70,44 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 
 # MAGIC %md-sandbox
 # MAGIC 
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 5/ Gold table: users joined with their spend score
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png)2: Gold table -  users joined with their spend score
 # MAGIC 
 # MAGIC <img style="float:right" width="400px" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-ingestion-step4.png"/>
 # MAGIC 
 # MAGIC We can now join the 2 tables based on the customer ID to create our final gold table.
 # MAGIC 
-# MAGIC This time we'll do that as an incremental batch (not the `.trigger(once=True)` setting).
+# MAGIC This time we'll do that as an incremental batch (not the `.trigger(once=True)` setting). <br><br>
+# MAGIC 
+# MAGIC <div style="color:green;">
+# MAGIC (1) In this excercise we will join  user_silver and spend_silver delta table to build Gold table that contains information about Users Spend. <br>
+# MAGIC (2) We will Join user_silver and spend_silver table on the column "id" <br> 
+# MAGIC (3) Drop the _rescued_data column that got added as part of populating spend_silver table. <br>
+# MAGIC (4) We will use writestream to write data to the Delta format tables. <br>
+# MAGIC (5) User trigger (once=True) to run stream one time. <br>
+# MAGIC (6) To provide exactly one semantics and recover from all failed state , autoloader manintins the state of the stream in the checkpoint. <br>
+# MAGIC (7) Writestream will write to the user_gold table  <br>
+# MAGIC </div> 
 
 # COMMAND ----------
 
 # DBTITLE 1,Join user and spend to our gold table, in python
+# Set the spend Data Frame with the spend_silver table
 spend = spark.read.table("spend_silver")
+
+# Spark Structure Streaming to Join 2 tables and write the data to final Gold Tables
 (spark.readStream.table("user_silver") 
      .join(spend, "id") 
      .drop("_rescued_data")
      .writeStream
+ # Remove the trigger option to do incremental batch. In Production scenario, you want to do incremental batch.
         .trigger(once=True)
         .option("checkpointLocation", cloud_storage_path+"/checkpoint_gold")
         .table("user_gold").awaitTermination())
 
 spark.read.table("user_gold").display()
+
+# COMMAND ----------
+
+# DBTITLE 1,3:  Exercise -  Lets Visualize the user_gold table that we created Above
+# MAGIC %sql
+# MAGIC select * from user_gold limit 10

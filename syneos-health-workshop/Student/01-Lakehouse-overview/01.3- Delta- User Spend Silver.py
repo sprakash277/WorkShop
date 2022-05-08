@@ -18,6 +18,7 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 
 # COMMAND ----------
 
+# DBTITLE 1,1:  Set the Env variable for the Exercise
 # MAGIC %run ../_resources/00-setup $reset_all_data=false
 
 # COMMAND ----------
@@ -67,36 +68,51 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 
 # COMMAND ----------
 
+# DBTITLE 1,2 : Set the data location to the variable
 users_data = "/FileStore/Databricks_workshop/Data/Users"
 spend_data = "/FileStore/Databricks_workshop/Data/User_Spend"
 
 # COMMAND ----------
 
 # MAGIC %md-sandbox
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 4/ Ingest Customer Spend data
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 3/ Ingest Customer Spend data
 # MAGIC 
 # MAGIC <img style="float:right" width="400px" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-ingestion-step3.png"/>
 # MAGIC 
-# MAGIC Our customer spend information is delivered by the finance team on another stream in csv file. Let's ingest this data using the auto-loader as previously: 
+# MAGIC Our customer spend information is delivered by the finance team on another stream in csv file. Let's ingest this data using the auto-loader as previously: <br> <br> 
+# MAGIC 
+# MAGIC <div style="color:green;">
+# MAGIC (1) Autoloader uses Spark Structured Stream, to use autoloader, we will set the format as "cloudfiles" and use readStream to ingest data from cloud files. <br>
+# MAGIC (2) The format of the files are csv, we will pass in the csv as the file format for the cloudfiles. <br>
+# MAGIC (3) For schema we can pass on the schema as SchemaHints, and would let Autoloader infer Schema <br>
+# MAGIC (4) For this example we'll use Autoloader to Ingest Data from spend_data path. <br>
+# MAGIC (5) We will use writestream to write data to the Delat format tables. To write table as delta format, pass on the delta as argument to the format. <br>
+# MAGIC (6) To provide exactly one semantics and recover from all failed state , autoloader manintins the state of the stream in the checkpoint. <br>
+# MAGIC (7) Autoloader can run as continuous stream or you trigger once as per the cron schedule, To trigger autoloader to run manually or at specified cron interval , set the trigger as (once=true). To set the autoloader as continous stream, don't set the trigger property. <br>
+# MAGIC (8) We can use table option as part of Autoloader syntax to automarically create table if table doesn't exists. Let's pass in the table argument as let autoloader automatically create spend_silver  table . <br>
+# MAGIC </div>  
 
 # COMMAND ----------
 
+# DBTITLE 1,Let's run the Autoloader - this time to read user spend csv file 
 (spark.readStream
-        .format("cloudFiles") 
-        .option("cloudFiles.format", "csv") 
+        .format(FILL_IN_THIS) 
+        .FILL_IN_THIS("cloudFiles.format", FILL_IN_THIS) 
         .option("cloudFiles.schemaHints", "age int, annual_income int, spending_core int") #schema subset for evolution / new field
         .option("cloudFiles.maxFilesPerTrigger", "10") 
+        #Autoloader will automatically infer all the schema & evolution
         .option("cloudFiles.schemaLocation", cloud_storage_path+"/schema_spend") #Autoloader will automatically infer all the schema & evolution
-        .load("/FileStore/Databricks_workshop/Data/User_Spend")
+        .load(FILL_IN_THIS)
       .withColumn("id", col("id").cast("int"))
       .writeStream
-        .trigger(once=True)
+        .trigger(FILL_IN_THIS)
         .option("checkpointLocation", cloud_storage_path+"/checkpoint_spend")
-        .table("spend_silver"))
+        .table(FILL_IN_THIS)
+)
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Continue with DLT: [DLT Pipeline](./?o=1444828305810485&owned-by-me=false&name-order=ascend&name=field_demos_retail#joblist/pipelines) and the [SQL notebook]($../02-Delta-Live-Table/02.1-SQL-Delta-Live-Table-Ingestion): 
-# MAGIC 
-# MAGIC Continue with ML: [create customers segments]($../04-DataScience-ML-use-cases/04.2-customer-segmentation/01-Retail-customer-segmentation)
+# DBTITLE 1,4:  Exercise -  Lets Visualize the user_silver table that we created Above
+# MAGIC %sql
+# MAGIC -- _rescued_data Column got added as part of previous Autoloader write. The rescued data column contains any data that wasn’t parsed, because it was missing from the given schema, because there was a type mismatch, or because the casing of the column didn’t match. The rescued data column is part of the schema returned by Auto Loader as “_rescued_data” by default when the schema is being inferred.
+# MAGIC select * FILL_IN_THIS limit 10;

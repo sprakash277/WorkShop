@@ -1,5 +1,6 @@
 # Databricks notebook source
-dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset all data")
+# DBTITLE 1,1. Will use the Widgets to pass in the value to the Notebook
+dbutils.widgets.dropdown("reset_all_data", "true", ["true", "false"], "Reset all data")
 
 # COMMAND ----------
 
@@ -18,6 +19,7 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 
 # COMMAND ----------
 
+# DBTITLE 1,2. Set the Env variable for the Exercise
 # MAGIC %run ../_resources/00-setup $reset_all_data=$reset_all_data
 
 # COMMAND ----------
@@ -68,23 +70,27 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 1/ Explore the dataset
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 3 : Explore the dataset
 # MAGIC 
 # MAGIC We'll be using 1 flow of data for this example:
 # MAGIC  * Customer stream (`customer id`, `email`, `firstname`, `lastname`...), delivered as JSON file in a blob storage
 
 # COMMAND ----------
 
+# DBTITLE 1,4 : Set the data location to the variable
 users_data = "/FileStore/Databricks_workshop/Data/Users"
 spend_data = "/FileStore/Databricks_workshop/Data/User_Spend"
 
 # COMMAND ----------
 
-# DBTITLE 1,This is the data being delivered in our cloud storage. Let's explore the raw json files
+# DBTITLE 1,5:  This is the data being delivered in our cloud storage. Let's explore the raw json files
 files = dbutils.fs.ls(users_data)
+dbutils.fs.ls(users_data)
+
 
 # COMMAND ----------
 
+# DBTITLE 1,6 : Let's run a SQL query to explore the data
 # MAGIC %sql
 # MAGIC -- As you can see, we have lot of small json files. Let's run a SQL query to explore the data
 # MAGIC select * from json.`/FileStore/Databricks_workshop/Data/Users`
@@ -92,38 +98,60 @@ files = dbutils.fs.ls(users_data)
 # COMMAND ----------
 
 # MAGIC %md-sandbox
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 2/ Bronze: loading data from blob storage
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 7 : Bronze: loading data from blob storage
+# MAGIC 
 # MAGIC <div style="float:right">
 # MAGIC   <img width="400px" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-ingestion-step1.png"/>
 # MAGIC </div>
-# MAGIC Databricks has advanced capacity such as Autoloader to easily ingest files, and support schema inference and evolution. 
 # MAGIC 
-# MAGIC For this example we'll use a sql `COPY INTO` command to incrementally load the data
+# MAGIC Databricks has advanced capacity such as Autoloader to easily ingest files, and support schema inference and evolution. <br> <br> 
+# MAGIC 
+# MAGIC <div style="color:green;">
+# MAGIC (1) Autoloader uses Spark Structured Stream, to use autoloader, we will set the format as "cloudfiles" and use readStream to ingest data from cloud files. <br>
+# MAGIC (2) As we saw in step 5 , the format of the files are Json, we will pass in the json as the file format for the cloudfiles. <br>
+# MAGIC (3) We can pass the schema to the Autoloader or let Autoloader infer schema from the event Stream, for simplicity we will read the scheam and pass the schema to the Autoloader. <br>
+# MAGIC (4) For this example we'll use Autoloader to Ingest Data from users_data path. <br>
+# MAGIC (5) We will use writestream to write data to the Delat format tables. To write table as delta format, pass on the delta as argument to the format. <br>
+# MAGIC (6) To provide exactly one semantics and recover from all failed state , autoloader manintins the state of the stream in the checkpoint. <br>
+# MAGIC (7) Autoloader can run as continuous stream or you trigger once as per the cron schedule, To trigger autoloader to run manually or at specified cron interval , set the trigger as (once=true). To set the autoloader as continous stream, don't set the trigger property. <br>
+# MAGIC (8) We can use table option as part of Autoloader syntax to automarically create table if table doesn't exists. Let's pass in the table argument as let autoloader automatically create user_bronze  table . <br>
+# MAGIC </div>  
 
 # COMMAND ----------
 
+# DBTITLE 1,8:  Let's Infer schema by reading the  users_data Json Files
 schema = spark.read.json(files[0].path).schema
 
 # COMMAND ----------
 
+# DBTITLE 1,9: Exercise -   Run Autoloader to read user_data json files
 (
    spark
     .readStream
       .format("cloudFiles")
-      .option("cloudFiles.format", "json")
-      .schema(schema)
+      .option("cloudFiles.format", FILL_IN_THIS)
+      .schema(FILL_IN_THIS)
       .option("cloudFiles.maxFilesPerTrigger", "1")             
-      .load(users_data)
-    .writeStream.format("delta")
+      .load(FILL_IN_THIS)
+    .writeStream.format(FILL_IN_THIS)
       .option("checkpointLocation", cloud_storage_path + "/checkpoint")
     .trigger(once=True)
-    .table("user_bronze")
+    .table(FILL_IN_THIS)
  # To run autoloader in Stream mode, comment trigger option and uncomment start option below
  #  .start("abfss://sales-data@sumitsalesdata.dfs.core.windows.net/demo_data/Tables/autoloader").awaitTermination()
  )
 
 # COMMAND ----------
 
-# DBTITLE 1,Our user_bronze Delta table is now ready for efficient query
+# DBTITLE 1,10 : Exercise -  Our user_bronze Delta table is now ready for efficient query
 # MAGIC %sql
-# MAGIC SELECT count(*) as c, postcode FROM user_bronze GROUP BY postcode ORDER BY c desc limit 10;
+# MAGIC SELECT 
+# MAGIC   count(*) as c, 
+# MAGIC   postcode 
+# MAGIC FROM 
+# MAGIC   FILL_IN_THIS
+# MAGIC GROUP BY 
+# MAGIC   postcode 
+# MAGIC ORDER BY 
+# MAGIC   c desc 
+# MAGIC limit 10;
