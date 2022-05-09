@@ -1,8 +1,4 @@
 # Databricks notebook source
-dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset all data")
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC # Build a Lakehouse to deliver value to your buiness lines
 # MAGIC 

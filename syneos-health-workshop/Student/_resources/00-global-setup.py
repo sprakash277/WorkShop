@@ -11,6 +11,7 @@
 users_data = "/FileStore/Databricks_workshop/Data/Users"
 spend_data = "/FileStore/Databricks_workshop/Data/User_Spend"
 users_update = "/FileStore/Databricks_workshop/Data/Users_Update"
+storage_path = "/workshop/dlt_pipeline"
 
 # COMMAND ----------
 

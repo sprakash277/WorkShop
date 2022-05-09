@@ -135,22 +135,6 @@ AS SELECT * FROM STREAM(live.${databaseName}_user_silver_dlt) LEFT JOIN live.${d
 
 -- COMMAND ----------
 
-
-
--- COMMAND ----------
-
--- MAGIC %md-sandbox
--- MAGIC ## 5/ Enriching the gold data with a ML model
--- MAGIC <div style="float:right">
--- MAGIC   <img width="500px" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-ingestion-dlt-step5.png"/>
--- MAGIC </div>
--- MAGIC 
--- MAGIC Our Data scientist team has build a customer segmentation model and saved it into Databricks Model registry. 
--- MAGIC 
--- MAGIC We can easily load this model and enrich our data with our customer segment information. Note that we don't have to worry about the model framework (sklearn or other), MLFlow abstract that for us.
-
--- COMMAND ----------
-
 -- MAGIC %md ## Our pipeline is now ready!
 -- MAGIC 
 -- MAGIC Open the DLT pipeline and click on start to visualize your lineage and consume the data incrementally!
@@ -162,8 +146,6 @@ AS SELECT * FROM STREAM(live.${databaseName}_user_silver_dlt) LEFT JOIN live.${d
 -- MAGIC Delta Live Tables tracks all your data quality metrics. You can leverage the expecations directly as SQL table with Databricks SQL to track your expectation metrics and send alerts as required. This let you build the following dashboards:
 -- MAGIC 
 -- MAGIC <img width="1000" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-dlt-data-quality-dashboard.png">
--- MAGIC 
--- MAGIC <a href="https://e2-demo-field-eng.cloud.databricks.com/sql/dashboards/6f73dd1b-17b1-49d0-9a11-b3772a2c3357-dlt---retail-data-quality-stats?o=1444828305810485" target="_blank">Data Quality Dashboard</a>
 
 -- COMMAND ----------
 
@@ -173,5 +155,3 @@ AS SELECT * FROM STREAM(live.${databaseName}_user_silver_dlt) LEFT JOIN live.${d
 -- MAGIC Let's switch to Databricks SQL to build a new dashboard based on all the data we ingested.
 -- MAGIC 
 -- MAGIC <img width="1000" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-dashboard.png"/>
--- MAGIC 
--- MAGIC <a href="https://e2-demo-field-eng.cloud.databricks.com/sql/dashboards/ab66e6c6-c2c5-4434-b784-ea5b02fe5eeb-sales-report?o=1444828305810485" target="_blank">Business Dashboard</a>

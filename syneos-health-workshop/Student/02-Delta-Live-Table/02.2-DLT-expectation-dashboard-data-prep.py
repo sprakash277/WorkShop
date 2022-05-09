@@ -1,9 +1,4 @@
 # Databricks notebook source
-dbutils.widgets.text("storage_path", "/Users/quentin.ambard@databricks.com/field_demos_retail/dlt", "DLT storage path")
-dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset all data")
-
-# COMMAND ----------
-
 # MAGIC %md #Delta Live Table expectation analysis
 # MAGIC Delta live table tracks our data quality through expectations. These expectations are stored as technical tables without the DLT log events. We can create a view to simply analyze this information
 # MAGIC 
@@ -19,7 +14,7 @@ dbutils.widgets.dropdown("reset_all_data", "false", ["true", "false"], "Reset al
 
 # COMMAND ----------
 
-# MAGIC %run ../_resources/00-setup $reset_all_data=true
+# MAGIC %run ../_resources/00-setup $reset_all_data=false
 
 # COMMAND ----------
 

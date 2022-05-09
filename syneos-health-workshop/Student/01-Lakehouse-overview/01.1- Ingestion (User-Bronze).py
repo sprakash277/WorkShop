@@ -20,7 +20,7 @@ dbutils.widgets.dropdown("reset_all_data", "true", ["true", "false"], "Reset all
 # COMMAND ----------
 
 # DBTITLE 1,2. Set the Env variable for the Exercise
-# MAGIC %run ../_resources/00-setup $reset_all_data=$reset_all_data
+# MAGIC %run ../_resources/00-setup $reset_all_data=true
 
 # COMMAND ----------
 

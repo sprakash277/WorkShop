@@ -5,7 +5,7 @@
 # COMMAND ----------
 
 # DBTITLE 1,We will Start with Setting up the environment for the Exercise
-# MAGIC %run ../_resources/00-setup $reset_all_data=$reset_all_data
+# MAGIC %run ../_resources/00-setup $reset_all_data=true
 
 # COMMAND ----------
 
