@@ -48,12 +48,12 @@
 -- COMMAND ----------
 
 -- DBTITLE 1,Ingest raw User stream data in incremental mode
-CREATE INCREMENTAL LIVE TABLE ${databaseName}_users_bronze_dlt (
+CREATE <PLEASE_FILL_IN> <PLEASE_FILL_IN> TABLE ${databaseName}_users_bronze_dlt (
   CONSTRAINT correct_schema EXPECT (_rescued_data IS NULL)
 )
 COMMENT "raw user data coming from json files ingested in incremental with Auto Loader to support schema inference and evolution"
 -- AS SELECT * FROM cloud_files("${users_data}", "json")
-AS SELECT * FROM cloud_files("/FileStore/Databricks_workshop/Data/Users", "json")
+AS SELECT * FROM <PLEASE_FILL_IN>("/FileStore/Databricks_workshop/Data/Users", "json")
 
 -- COMMAND ----------
 
@@ -70,7 +70,7 @@ AS SELECT * FROM cloud_files("/FileStore/Databricks_workshop/Data/Users", "json"
 -- COMMAND ----------
 
 -- DBTITLE 1,Clean and anonymise User data
-CREATE INCREMENTAL LIVE TABLE ${databaseName}_user_silver_dlt (
+CREATE <PLEASE_FILL_IN> <PLEASE_FILL_IN> TABLE ${databaseName}_user_silver_dlt (
   CONSTRAINT valid_id EXPECT (id IS NOT NULL and id > 0) 
 )
 COMMENT "User data cleaned and anonymized for analysis."
@@ -85,7 +85,7 @@ AS SELECT
   city, 
   last_ip, 
   postcode
-from STREAM(live.${databaseName}_users_bronze_dlt)
+from <PLEASE_FILL_IN>(live.${databaseName}_users_bronze_dlt)
 
 -- COMMAND ----------
 
@@ -102,11 +102,11 @@ from STREAM(live.${databaseName}_users_bronze_dlt)
 -- COMMAND ----------
 
 -- DBTITLE 1,Ingest user spending score
-CREATE INCREMENTAL LIVE TABLE ${databaseName}_spend_silver_dlt (
+CREATE <PLEASE_FILL_IN> <PLEASE_FILL_IN> TABLE ${databaseName}_spend_silver_dlt (
   CONSTRAINT valid_id EXPECT (id IS NOT NULL and id > 0)
 )
 COMMENT "Spending score from raw data"
-AS SELECT * FROM cloud_files("/FileStore/Databricks_workshop/Data/User_Spend", "csv", map("cloudFiles.schemaHints", "id int, age int, annual_income float, spending_core float"))
+AS SELECT * FROM <PLEASE_FILL_IN>("/FileStore/Databricks_workshop/Data/User_Spend", "csv", map("cloudFiles.schemaHints", "id int, age int, annual_income float, spending_core float"))
 --AS SELECT * FROM cloud_files("${spend_data}", "csv", map("cloudFiles.schemaHints", "id int, age int, annual_income float, spending_core float"))
 
 -- COMMAND ----------
@@ -125,13 +125,13 @@ AS SELECT * FROM cloud_files("/FileStore/Databricks_workshop/Data/User_Spend", "
 -- COMMAND ----------
 
 -- DBTITLE 1,Join both data to create our final table
-CREATE INCREMENTAL LIVE TABLE ${databaseName}_user_gold_dlt (
+CREATE <PLEASE_FILL_IN> <PLEASE_FILL_IN> TABLE ${databaseName}_user_gold_dlt (
   CONSTRAINT valid_age EXPECT (age IS NOT NULL) ON VIOLATION DROP ROW,
   CONSTRAINT valid_income EXPECT (annual_income IS NOT NULL) ON VIOLATION DROP ROW,
   CONSTRAINT valid_score EXPECT (spending_core IS NOT NULL ) ON VIOLATION DROP ROW
 )
 COMMENT "Finale user table with all information for Analysis / ML"
-AS SELECT * FROM STREAM(live.${databaseName}_user_silver_dlt) LEFT JOIN live.${databaseName}_spend_silver_dlt USING (id)
+AS SELECT * FROM <PLEASE_FILL_IN>(live.${databaseName}_user_silver_dlt) LEFT JOIN live.${databaseName}_spend_silver_dlt USING (id)
 
 -- COMMAND ----------
 
