@@ -20,7 +20,7 @@ dbutils.widgets.dropdown("reset_all_data", "true", ["true", "false"], "Reset all
 # COMMAND ----------
 
 # DBTITLE 1,2. Set the Env variable for the Exercise
-# MAGIC %run ../_resources/00-setup $reset_all_data=$reset_all_data
+# MAGIC %run ../_resources/00-setup $reset_all_data=true
 
 # COMMAND ----------
 
@@ -77,20 +77,14 @@ dbutils.widgets.dropdown("reset_all_data", "true", ["true", "false"], "Reset all
 
 # COMMAND ----------
 
-# DBTITLE 1,4 : Set the data location to the variable
-users_data = "/FileStore/Databricks_workshop/Data/Users"
-spend_data = "/FileStore/Databricks_workshop/Data/User_Spend"
-
-# COMMAND ----------
-
-# DBTITLE 1,5:  This is the data being delivered in our cloud storage. Let's explore the raw json files
+# DBTITLE 1,4:  This is the data being delivered in our cloud storage. Let's explore the raw json files
 files = dbutils.fs.ls(users_data)
 dbutils.fs.ls(users_data)
 
 
 # COMMAND ----------
 
-# DBTITLE 1,6 : Let's run a SQL query to explore the data
+# DBTITLE 1,5 : Let's run a SQL query to explore the data
 # MAGIC %sql
 # MAGIC -- As you can see, we have lot of small json files. Let's run a SQL query to explore the data
 # MAGIC select * from json.`/FileStore/Databricks_workshop/Data/Users`
@@ -98,7 +92,7 @@ dbutils.fs.ls(users_data)
 # COMMAND ----------
 
 # MAGIC %md-sandbox
-# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 7 : Bronze: loading data from blob storage
+# MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) 6 : Bronze: loading data from blob storage
 # MAGIC 
 # MAGIC <div style="float:right">
 # MAGIC   <img width="400px" src="https://github.com/QuentinAmbard/databricks-demo/raw/main/retail/resources/images/retail-ingestion-step1.png"/>
@@ -119,12 +113,12 @@ dbutils.fs.ls(users_data)
 
 # COMMAND ----------
 
-# DBTITLE 1,8:  Let's Infer schema by reading the  users_data Json Files
+# DBTITLE 1,7:  Let's Infer schema by reading the  users_data Json Files
 schema = spark.read.json(files[0].path).schema
 
 # COMMAND ----------
 
-# DBTITLE 1,9: Exercise -   Run Autoloader to read user_data json files
+# DBTITLE 1,8: Exercise -   Run Autoloader to read user_data json files
 (
    spark
     .readStream
@@ -143,7 +137,7 @@ schema = spark.read.json(files[0].path).schema
 
 # COMMAND ----------
 
-# DBTITLE 1,10 : Exercise -  Our user_bronze Delta table is now ready for efficient query
+# DBTITLE 1,9 : Exercise -  Our user_bronze Delta table is now ready for efficient query
 # MAGIC %sql
 # MAGIC SELECT 
 # MAGIC   count(*) as c, 
