@@ -170,7 +170,7 @@ COMMENT "Clean, merged customers";
 -- COMMAND ----------
 
 APPLY CHANGES INTO LIVE.${userID}_customer_silver
-FROM stream(LIVE.customer_bronze_clean_v)
+FROM stream(LIVE.${userID}_customer_bronze_clean_v)
   KEYS (id)
   APPLY AS DELETE WHEN operation = "DELETE"
   SEQUENCE BY operation_date --auto-incremental ID to identity order of events
