@@ -27,7 +27,7 @@
     "name": "DLT_PIPELINE",
     "storage": "/workshop/dlt_pipeline",
     "configuration": {
-        "databaseName": "FILL_IN_THIS"
+        "databaseName": "DLT_EXERCISE"
     },
     "target": "${databaseName}"
 }

@@ -20,14 +20,14 @@
     "libraries": [
         {
             "notebook": {
-                "path": "/Repos/DLT_PIPELINE_RUN/WorkShop/syneos-health-workshop/Student/02-Delta-Live-Table/02.1-SQL-Delta-Live-Table-Ingestion"
+                "path": "/Repos/DLT_PIPELINE_RUN/WorkShop/syneos-health-workshop/Student/02-Delta-Live-Table/1-SQL-Delta-Live-Table-Ingestion"
             }
         }
     ],
     "name": "DLT_PIPELINE",
     "storage": "/workshop/dlt_pipeline",
     "configuration": {
-        "databaseName": "FILL_IN_THIS"
+        "databaseName": "DLT_EXERCISE"
     },
     "target": "${databaseName}"
 }

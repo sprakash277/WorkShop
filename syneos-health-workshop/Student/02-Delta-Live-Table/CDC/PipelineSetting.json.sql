@@ -21,7 +21,7 @@
     "libraries": [
         {
             "notebook": {
-"path":"/Repos/DLT_PIPELINE_RUN/WorkShop/syneos-health-workshop/Instructor/02-Delta-Live-Table/CDC/02.3-Retail_DLT_CDC_sql"
+"path":"/Repos/DLT_PIPELINE_RUN/WorkShop/syneos-health-workshop/Instructor/02-Delta-Live-Table/CDC/2-Retail_DLT_CDC_sql"
             }
         }
     ],
@@ -30,5 +30,5 @@
         "source": "/tmp/demo/cdc_raw",
         "pipelines.applyChangesPreviewEnabled": "true"
     },
-    "target": "FILL_IN_THIS"
+    "target": "DLT_EXERCISE"
 }
