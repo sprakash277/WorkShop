@@ -139,7 +139,7 @@ FROM
 -- COMMAND ----------
 
 -- DBTITLE 1,Silver Layer - Cleansed Table (Impose Constraints)
-CREATE OR REFRESH TEMPORARY STREAMING LIVE TABLE customer_bronze_clean_v(
+CREATE OR REFRESH TEMPORARY FILL_IN_THIS customer_bronze_clean_v(
   CONSTRAINT valid_id EXPECT (id IS NOT NULL) ON VIOLATION DROP ROW,
   CONSTRAINT valid_address EXPECT (address IS NOT NULL),
   CONSTRAINT valid_operation EXPECT (operation IS NOT NULL) ON VIOLATION DROP ROW
@@ -147,7 +147,7 @@ CREATE OR REFRESH TEMPORARY STREAMING LIVE TABLE customer_bronze_clean_v(
 TBLPROPERTIES ("quality" = "silver")
 COMMENT "Cleansed bronze customer view (i.e. what will become Silver)"
 AS SELECT * 
-FROM STREAM(LIVE.customer_bronze);
+FROM STREAM(FILL_IN_THIS);
 
 -- COMMAND ----------
 
@@ -169,7 +169,7 @@ COMMENT "Clean, merged customers";
 
 -- COMMAND ----------
 
-APPLY CHANGES INTO LIVE.customer_silver
+FILL_IN_THIS INTO LIVE.customer_silver
 FROM stream(LIVE.customer_bronze_clean_v)
   KEYS (id)
   APPLY AS DELETE WHEN operation = "DELETE"
