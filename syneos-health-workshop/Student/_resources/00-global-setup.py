@@ -66,6 +66,11 @@ print("using cloud_storage_path {}".format(cloud_storage_path))
 
 # COMMAND ----------
 
+## Config For DLT
+folder = "/tmp/"+current_user_no_at+"demo/cdc_raw"
+
+# COMMAND ----------
+
 if reset_all:
    (
    spark

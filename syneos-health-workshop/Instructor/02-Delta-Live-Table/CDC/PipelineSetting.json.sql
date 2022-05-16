@@ -1,9 +1,17 @@
 -- Databricks notebook source
 {
-     "clusters": [
+       "clusters": [
         {
             "label": "default",
-            "num_workers": 1
+            "policy_id": "606203597A000705",
+            "autoscale": {
+                "min_workers": 1,
+                "max_workers": 5
+            }
+        },
+        {
+            "label": "maintenance",
+            "policy_id": "606203597A000705"
         }
     ],
     "development": true,
@@ -13,7 +21,7 @@
     "libraries": [
         {
             "notebook": {
-"path":"/Repos/mojgan.mazouchi@databricks.com/Delta-Live-Tables/notebooks/2-Retail_DLT_CDC_sql"
+"path":"/Repos/DLT_PIPELINE_RUN/WorkShop/syneos-health-workshop/Instructor/02-Delta-Live-Table/CDC/02.3-Retail_DLT_CDC_sql"
             }
         }
     ],
@@ -24,4 +32,3 @@
     },
     "target": "FILL_IN_THIS"
 }
-
