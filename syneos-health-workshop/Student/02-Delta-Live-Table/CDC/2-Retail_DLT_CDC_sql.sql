@@ -117,7 +117,7 @@
 SET
   spark.source;
 CREATE
-  OR REFRESH STREAMING LIVE TABLE customer_bronze (
+  OR REFRESH STREAMING LIVE TABLE ${userID}_customer_bronze (
     address string,
     email string,
     id string,
@@ -139,7 +139,7 @@ FROM
 -- COMMAND ----------
 
 -- DBTITLE 1,Silver Layer - Cleansed Table (Impose Constraints)
-CREATE OR REFRESH TEMPORARY FILL_IN_THIS customer_bronze_clean_v(
+CREATE OR REFRESH TEMPORARY FILL_IN_THIS ${userID}_customer_bronze_clean_v(
   CONSTRAINT valid_id EXPECT (id IS NOT NULL) ON VIOLATION DROP ROW,
   CONSTRAINT valid_address EXPECT (address IS NOT NULL),
   CONSTRAINT valid_operation EXPECT (operation IS NOT NULL) ON VIOLATION DROP ROW
@@ -147,7 +147,7 @@ CREATE OR REFRESH TEMPORARY FILL_IN_THIS customer_bronze_clean_v(
 TBLPROPERTIES ("quality" = "silver")
 COMMENT "Cleansed bronze customer view (i.e. what will become Silver)"
 AS SELECT * 
-FROM STREAM(FILL_IN_THIS);
+FROM STREAM(LIVE.${userID}_customer_bronze);
 
 -- COMMAND ----------
 
@@ -163,14 +163,14 @@ FROM STREAM(FILL_IN_THIS);
 -- COMMAND ----------
 
 -- DBTITLE 1,Delete unwanted clients records - Silver Table - DLT SQL 
-CREATE OR REFRESH STREAMING LIVE TABLE customer_silver
+CREATE OR REFRESH STREAMING LIVE TABLE ${userID}_customer_silver
 TBLPROPERTIES ("quality" = "silver")
 COMMENT "Clean, merged customers";
 
 -- COMMAND ----------
 
-FILL_IN_THIS INTO LIVE.customer_silver
-FROM stream(LIVE.customer_bronze_clean_v)
+FILL_IN_THIS INTO LIVE.${userID}_customer_silver
+FROM stream(LIVE.${userID}_customer_bronze_clean_v)
   KEYS (id)
   APPLY AS DELETE WHEN operation = "DELETE"
   SEQUENCE BY operation_date --auto-incremental ID to identity order of events

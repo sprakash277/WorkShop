@@ -27,6 +27,7 @@
     ],
     "name": "DLT_CDC",
     "configuration": {
+        "userID": "FILL_IN_YOUR_ID",
         "source": "/tmp/demo/cdc_raw",
         "pipelines.applyChangesPreviewEnabled": "true"
     },
