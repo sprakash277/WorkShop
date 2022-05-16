@@ -48,12 +48,12 @@
 -- COMMAND ----------
 
 -- DBTITLE 1,Ingest raw User stream data in incremental mode
-CREATE <PLEASE_FILL_IN> <PLEASE_FILL_IN> TABLE ${databaseName}_users_bronze_dlt (
+CREATE INCREMENTAL LIVE TABLE  ${databaseName}_users_bronze_dlt (
   CONSTRAINT correct_schema EXPECT (_rescued_data IS NULL)
 )
 COMMENT "raw user data coming from json files ingested in incremental with Auto Loader to support schema inference and evolution"
 -- AS SELECT * FROM cloud_files("${users_data}", "json")
-AS SELECT * FROM <PLEASE_FILL_IN>("/FileStore/Databricks_workshop/Data/Users", "json")
+AS SELECT * FROM cloud_files("/FileStore/Databricks_workshop/Data/Users", "json")
 
 -- COMMAND ----------
 
