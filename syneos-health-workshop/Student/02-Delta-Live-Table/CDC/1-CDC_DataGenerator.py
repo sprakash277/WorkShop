@@ -3,7 +3,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ../../_resources/00-global-setup $reset_all_data=false $db_prefix=retail
+# MAGIC %run ../../../../_resources/00-global-setup $reset_all_data=false $db_prefix=retail
 
 # COMMAND ----------
 

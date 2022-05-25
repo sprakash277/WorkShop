@@ -13,7 +13,7 @@
 # COMMAND ----------
 
 # DBTITLE 1,1:  Set the Env variable for the Exercise
-# MAGIC %run ../_resources/00-setup $reset_all_data=false
+# MAGIC %run ../../../_resources/00-setup $reset_all_data=false
 
 # COMMAND ----------
 
