@@ -186,3 +186,4 @@ def user_gold_dlt():
 
 # COMMAND ----------
 
+
