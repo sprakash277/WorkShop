@@ -5,8 +5,7 @@
 # COMMAND ----------
 
 # DBTITLE 1,We will Start with Setting up the environment for the Exercise
-# Testing the Git
-%run ../../../_resources/00-setup $reset_all_data=true
+# MAGIC %run ../../../_resources/00-setup $reset_all_data=true
 
 # COMMAND ----------
 
