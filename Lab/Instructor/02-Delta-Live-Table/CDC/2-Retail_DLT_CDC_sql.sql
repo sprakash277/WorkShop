@@ -174,7 +174,8 @@ FROM stream(LIVE.${userID}_customer_bronze_clean_v)
   KEYS (id)
   APPLY AS DELETE WHEN operation = "DELETE"
   SEQUENCE BY operation_date --auto-incremental ID to identity order of events
-  COLUMNS * EXCEPT (operation, operation_date);
+  COLUMNS * EXCEPT (operation, operation_date)
+  STORED AS SCD TYPE 1;
 
 -- COMMAND ----------
 
